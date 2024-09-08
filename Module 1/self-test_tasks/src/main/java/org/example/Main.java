@@ -1,6 +1,8 @@
 package org.example;
 
 import java.util.Scanner;
+import java.util.Arrays;
+
 
 public class Main {
     final int INF = 99999999;
@@ -58,6 +60,20 @@ class Task2{
         }
 
         return (min_nesting > min_mass)&&(max_nesting < max_mass);
+    }
+}
+
+class Task3{
+    public static char[] fixString(char[] fixing_string){
+        char[] result = Arrays.copyOf(fixing_string, fixing_string.length); // копия строки, чтобы не изменять исходную строку
+        char memory;
+        for(int i = 0; i + 1 < result.length; i+=2){
+            memory = result[i];
+            result[i] = result[i + 1];
+            result[i + 1] = memory;
+        }
+
+        return result;
     }
 }
 
