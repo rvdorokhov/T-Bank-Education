@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 
 public class Main {
-    final int INF = 99999999;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String test = scanner.nextLine();
@@ -71,6 +70,41 @@ class Task3{
             memory = result[i];
             result[i] = result[i + 1];
             result[i + 1] = memory;
+        }
+
+        return result;
+    }
+}
+
+class Task4{
+    private static boolean isPalindrome(String checking_number){
+        boolean result = true;
+        final int length = checking_number.length();
+        for(int i = 0; (i < length - i - 1)&&result; i++){
+            result = checking_number.charAt(i) == checking_number.charAt(length - i - 1);
+        }
+
+        return result;
+    }
+
+    public static boolean isPalindromeDescendant(int checking_number){
+        String checking_char = Integer.toString(checking_number);
+        String memory;
+        boolean result = false;
+
+        while((checking_char.length() > 1)&&(!result)){
+            result = isPalindrome(checking_char);
+
+            memory = "";
+            for(int i = 0; i + 1 < checking_char.length(); i+=2){
+                int num1 = Character.getNumericValue(checking_char.charAt(i));
+                int num2 = Character.getNumericValue(checking_char.charAt(i + 1));
+                String inserting_num = Integer.toString(num1 + num2);
+
+                memory = memory + inserting_num;
+            }
+
+            checking_char = memory;
         }
 
         return result;
