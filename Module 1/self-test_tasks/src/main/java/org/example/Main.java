@@ -3,6 +3,7 @@ package org.example;
 import java.util.Scanner;
 
 public class Main {
+    final int INF = 99999999;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String test = scanner.nextLine();
@@ -10,6 +11,10 @@ public class Main {
         System.out.println(seconds);
         scanner.close();
     }
+}
+
+class GlobalValues {
+    public static final int INF = 999999999;
 }
 
 class Task1{
@@ -35,3 +40,46 @@ class Task1{
         return minutes * 60 + seconds;
     }
 }
+
+class Task2{
+    public static boolean isNestable(int[] nesting, int[] mass) {
+        int max_mass, min_mass, max_nesting, min_nesting;
+        max_mass = max_nesting = -GlobalValues.INF;
+        min_mass = min_nesting = GlobalValues.INF;
+
+        for(int i = 0; i < mass.length; i++){
+            max_mass = (max_mass < mass[i]) ? mass[i] : max_mass;
+            min_mass = (min_mass > mass[i]) ? mass[i] : min_mass;
+        }
+
+        for(int j = 0; j < nesting.length; j++){
+            max_nesting = (max_nesting < nesting[j]) ? nesting[j] : max_nesting;
+            min_nesting = (min_nesting > nesting[j]) ? nesting[j] : min_nesting;
+        }
+
+        return (min_nesting > min_mass)&&(max_nesting < max_mass);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
