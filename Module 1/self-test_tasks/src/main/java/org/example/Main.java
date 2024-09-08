@@ -2,6 +2,8 @@ package org.example;
 
 import java.util.Scanner;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class Main {
@@ -108,6 +110,42 @@ class Task4{
         }
 
         return result;
+    }
+}
+
+class Task5{
+    final static Set<Integer> ban_numbers = Set.of(1111, 2222, 3333, 4444, 5555, 6666, 7777, 8888, 9999);
+    static int counter = 0;
+    static int memory;
+
+    public static int countK(int number){
+        if(ban_numbers.contains(number)||(number <= 1000)||(number >= 10000)){
+            System.out.println("Incorrect input");
+            counter = 0;
+            return -1;
+        }
+
+        counter += 1;
+
+        char[] str_input = Integer.toString(number).toCharArray();
+        Arrays.sort(str_input);
+        String str_inc = ""; String str_dec = "";
+        for(int i = 0; i < str_input.length; i++){
+            str_inc += str_input[i];
+            str_dec += str_input[str_input.length - i - 1];
+        }
+
+        int num_inc = Integer.parseInt(str_inc);
+        int num_dec = Integer.parseInt(str_dec);
+        int num_result = num_dec - num_inc;
+
+        if (num_result == 6174) {
+            memory = counter;
+            counter = 0;
+            return memory;
+        }
+
+        return countK(num_result);
     }
 }
 
