@@ -8,11 +8,6 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String test = scanner.nextLine();
-        int seconds = Task1.minutesToSeconds(test);
-        System.out.println(seconds);
-        scanner.close();
     }
 }
 
