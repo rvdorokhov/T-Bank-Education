@@ -1,0 +1,23 @@
+wall.name = Стена
+passage.name = Проход
+coin.name = Монета
+guardian.name = Стражник
+
+wall.cost = 999999999
+passage.cost = 5
+coin.cost = 2
+guardian.cost = 10
+
+wall.visualization = ⛋
+passage.visualization = ⛆
+coin.visualization = ⭗
+guardian.visualization = ♗
+path.visualization = ☻
+
+wall.description = Это стена. Неожиданно, но через нее пройти нельзя. А что вы ожидали?
+passage.description = Обычный проход, ничего интересного. Чтобы преодолеть такой, вы потратите
+coin.description = Кажется, что вы нашли монету! Вы настолько воодушевлены находной, \
+                   что пробегаете проход за
+guardian.description = Вы наткнулись на стражника! Мимо просто так не пройти - \
+                       придется одолеть его в честном бою. Вы потратите на это
+
