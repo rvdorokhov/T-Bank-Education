@@ -1,0 +1,46 @@
+start.menu = \
+1. Добавить нелинейное преобразование \n\
+2. Добавить афинное преобразование \n\
+3. Отрисовать фрактальное пламя \n\
+4. Выйти
+
+add.affine.message = Введите параметры a, b, c, d, e, f и параметры цветов r, g, b афинного преобразования:
+add.non.linear.message = Введите цифру выбранного преобразования:
+add.non.linear.try.again = Нелинейного преобразования с такой цифрой нет. Введите цифру еще раз:
+
+wrong.rgb = Параметры RGB должны находиться в диапазоне от 0 до 255.
+wrong.coefs = Неверные коэффициенты афинного преобразования. Коэффициенты должны соответствовать условиям:\n\
+a^2 + d^2 < 1\n\
+b^2 + e^2 < 1\n\
+a^2 + b^2 + d^2 + e^2 < 1 + (ae - bd)^2
+
+file.path.message = Введите название файла:
+writing.to.file.error = Ошибка записи в файл - введите путь еще раз:
+
+start.menu.try.again = Выбора с такой цифрой нет. Введите цифру еще раз:
+height.message.try.again = Некорректное значение высоты. Введите число еще раз:
+width.message.try.again = Некорректное значение ширины. Введите число еще раз:
+sample.message.try.again = Некорректное значение sample. Введите число еще раз:
+iter.per.sample.message.try.again = Некорректное значение количества итераций за sample. Введите число еще раз:
+
+
+height.message = Введите высоту:
+width.message = Введите ширину:
+sample.message = Введите количество начальных точек:
+iter.per.sample.message = Введите количество итераций для каждой начальной точки:
+coef.try.again = Некорректное значение коэффициента. Введите коэффициент еще раз:
+
+backend.academy.transformations.nonlinear.spheretransformation = Сфера
+backend.academy.transformations.nonlinear.disktransformation = Диск
+backend.academy.transformations.nonlinear.hearttransformation = Сердце
+backend.academy.transformations.nonlinear.polartransformation = Полярное
+backend.academy.transformations.nonlinear.sintransformation = Синусоидальное
+void.transformators = Прежде чем отрисовать фракатльное пламя, добавьте\
+\ хотя бы одно нелинейное преобразование\
+\ и хотя бы одно афинное преобразование
+
+without.completable.future = Время работы однопоточной версии в миллисекундах:\u0020
+one.pool = Время работы многопоточной версии с использованием одного потока \
+(с указанием Executors.newFixedThreadPool(1)) в миллисекундах:\u0020
+multi.pool = Время работы многопоточной версии в миллисекундах:\u0020
+working = Запуск...
