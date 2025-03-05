@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ComparatorExample.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java</a> &gt; <a href="index.source.html" class="el_package">backend.academy.samples.comparator</a> &gt; <span class="el_source">ComparatorExample.java</span></div><h1>ComparatorExample.java</h1><pre class="source lang-java linenums">package backend.academy.samples.comparator;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import lombok.extern.log4j.Log4j2;
+
+<span class="nc" id="L9">@Log4j2</span>
+<span class="nc" id="L10">public class ComparatorExample {</span>
+    public static void main(String[] args) {
+<span class="nc" id="L12">        List&lt;Employee&gt; employees = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L14">        employees.add(new Employee(1010, &quot;Rajeev&quot;, 100000.00, LocalDate.of(2010, 7, 10)));</span>
+<span class="nc" id="L15">        employees.add(new Employee(1004, &quot;Chris&quot;, 95000.50, LocalDate.of(2017, 3, 19)));</span>
+<span class="nc" id="L16">        employees.add(new Employee(1015, &quot;David&quot;, 134000.00, LocalDate.of(2017, 9, 28)));</span>
+<span class="nc" id="L17">        employees.add(new Employee(1009, &quot;Steve&quot;, 100000.00, LocalDate.of(2016, 5, 18)));</span>
+
+<span class="nc" id="L19">        log.info(&quot;Employees : {}&quot;, employees);</span>
+
+        // Sort employees by Name
+<span class="nc" id="L22">        employees.sort(Comparator.comparing(Employee::name));</span>
+<span class="nc" id="L23">        log.info(&quot;Employees (Sorted by Name) : {}&quot;, employees);</span>
+
+        // Sort employees by Salary
+<span class="nc" id="L26">        employees.sort(Comparator.comparingDouble(Employee::salary));</span>
+<span class="nc" id="L27">        log.info(&quot;Employees (Sorted by Salary) : {}&quot;, employees);</span>
+
+        // Sort employees by JoiningDate
+<span class="nc" id="L30">        employees.sort(Comparator.comparing(Employee::joiningDate));</span>
+<span class="nc" id="L31">        log.info(&quot;Employees (Sorted by JoiningDate) : {}&quot;, employees);</span>
+
+        // Sort employees by Name in descending order
+<span class="nc" id="L34">        employees.sort(Comparator.comparing(Employee::name).reversed());</span>
+<span class="nc" id="L35">        log.info(&quot;Employees (Sorted by Name in descending order) : {}&quot;, employees);</span>
+
+        // Chaining multiple Comparators
+        // Sort by Salary. If Salary is same then sort by Name
+<span class="nc" id="L39">        employees.sort(Comparator.&lt;Employee&gt;comparingDouble(Employee::salary).thenComparing(Employee::name));</span>
+<span class="nc" id="L40">        log.info(&quot;Employees (Sorted by Salary and Name) : {}&quot;, employees);</span>
+<span class="nc" id="L41">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

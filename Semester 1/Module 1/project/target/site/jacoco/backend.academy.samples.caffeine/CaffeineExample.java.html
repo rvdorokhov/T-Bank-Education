@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CaffeineExample.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java</a> &gt; <a href="index.source.html" class="el_package">backend.academy.samples.caffeine</a> &gt; <span class="el_source">CaffeineExample.java</span></div><h1>CaffeineExample.java</h1><pre class="source lang-java linenums">package backend.academy.samples.caffeine;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.CacheLoader;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
+import lombok.extern.log4j.Log4j2;
+
+/**
+ * Caffeine is a high-performance caching library with Map-like interface.
+ * Do not confuse with {@link com.google.common.cache.Cache}!
+ * &lt;p&gt;
+ * &lt;a href=&quot;https://github.com/ben-manes/caffeine/wiki&quot;&gt;Library documentation&lt;/a&gt;
+ */
+<span class="nc" id="L18">@Log4j2</span>
+<span class="nc" id="L19">public class CaffeineExample {</span>
+    public static void main(String[] args) throws InterruptedException {
+<span class="nc" id="L21">        Cache&lt;String, String&gt; cache = Caffeine.newBuilder()</span>
+<span class="nc" id="L22">            .maximumSize(3)</span>
+<span class="nc" id="L23">            .expireAfterWrite(1, TimeUnit.SECONDS)</span>
+<span class="nc" id="L24">            .build();</span>
+
+<span class="nc" id="L26">        cache.put(&quot;key1&quot;, &quot;value1&quot;);</span>
+<span class="nc" id="L27">        var firstVal = cache.getIfPresent(&quot;key1&quot;);</span>
+<span class="nc" id="L28">        cache.put(&quot;key2&quot;, &quot;value2&quot;);</span>
+<span class="nc" id="L29">        var secondVal = cache.getIfPresent(&quot;key2&quot;);</span>
+<span class="nc" id="L30">        var thirdVal = cache.getIfPresent(&quot;key3&quot;);</span>
+<span class="nc" id="L31">        log.info(&quot;First value: {}, second value: {}, third value: {}&quot;, firstVal, secondVal, thirdVal);</span>
+
+<span class="nc" id="L33">        log.info(&quot;Current Cache state: {}&quot;, cache.asMap());</span>
+<span class="nc" id="L34">        Thread.sleep(Duration.of(1, ChronoUnit.SECONDS));</span>
+<span class="nc" id="L35">        log.info(&quot;Cache state after expiration: {}&quot;, cache.asMap());</span>
+
+<span class="nc" id="L37">        LoadingCache&lt;String, String&gt; loadingCache = Caffeine.newBuilder()</span>
+<span class="nc" id="L38">            .expireAfterWrite(1, TimeUnit.SECONDS)</span>
+<span class="nc" id="L39">            .maximumSize(10)</span>
+<span class="nc" id="L40">            .build(new CacheLoader&lt;String, String&gt;() {</span>
+                @Override
+                public String load(String key) throws Exception {
+<span class="nc" id="L43">                    log.info(&quot;Loading with key: {}&quot;, key);</span>
+<span class="nc" id="L44">                    return key + &quot;value&quot;;</span>
+                }
+            });
+
+<span class="nc" id="L48">        loadingCache.put(&quot;key1&quot;, &quot;value1&quot;);</span>
+<span class="nc" id="L49">        loadingCache.get(&quot;key2&quot;);</span>
+<span class="nc" id="L50">        loadingCache.get(&quot;key2&quot;);</span>
+<span class="nc" id="L51">        log.info(&quot;Current LoadingCache state: {}&quot;, loadingCache.asMap());</span>
+<span class="nc" id="L52">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CarMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java</a> &gt; <a href="index.source.html" class="el_package">backend.academy.samples.mapstruct</a> &gt; <span class="el_source">CarMapper.java</span></div><h1>CarMapper.java</h1><pre class="source lang-java linenums">package backend.academy.samples.mapstruct;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+
+@Mapper
+public interface CarMapper {
+    @Mapping(target = &quot;manufacturer&quot;, source = &quot;make&quot;)
+    @Mapping(target = &quot;seatCount&quot;, source = &quot;numberOfSeats&quot;)
+    @Mapping(target = &quot;mileageInKilometers&quot;, source = &quot;mileageInMiles&quot;, qualifiedByName = &quot;milesToKilometers&quot;)
+    CarDto carToCarDto(Car car);
+
+    @Mapping(target = &quot;fullName&quot;, source = &quot;name&quot;)
+    PersonDto personToPersonDto(Person person);
+
+    // the default method is used for custom complex mapping
+    @Named(&quot;milesToKilometers&quot;)
+    default double milesToKilometers(double miles) {
+<span class="nc" id="L20">        return miles * 1.609344;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

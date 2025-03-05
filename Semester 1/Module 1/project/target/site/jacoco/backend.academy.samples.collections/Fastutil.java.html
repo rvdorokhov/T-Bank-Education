@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Fastutil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java</a> &gt; <a href="index.source.html" class="el_package">backend.academy.samples.collections</a> &gt; <span class="el_source">Fastutil.java</span></div><h1>Fastutil.java</h1><pre class="source lang-java linenums">package backend.academy.samples.collections;
+
+import it.unimi.dsi.fastutil.Arrays;
+import it.unimi.dsi.fastutil.chars.Char2IntMap;
+import it.unimi.dsi.fastutil.chars.Char2IntRBTreeMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMaps;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntArrays;
+import it.unimi.dsi.fastutil.ints.IntBidirectionalIterator;
+import it.unimi.dsi.fastutil.ints.IntIterator;
+import it.unimi.dsi.fastutil.ints.IntIterators;
+import it.unimi.dsi.fastutil.ints.IntLinkedOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.ints.IntSortedSet;
+import it.unimi.dsi.fastutil.io.BinIO;
+import it.unimi.dsi.fastutil.io.TextIO;
+import it.unimi.dsi.fastutil.longs.Long2IntAVLTreeMap;
+import it.unimi.dsi.fastutil.longs.Long2IntSortedMap;
+import it.unimi.dsi.fastutil.longs.Long2IntSortedMaps;
+import it.unimi.dsi.fastutil.longs.LongBidirectionalIterator;
+import it.unimi.dsi.fastutil.longs.LongIterator;
+import it.unimi.dsi.fastutil.longs.LongMappedBigList;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteOrder;
+import java.nio.channels.FileChannel;
+import lombok.extern.log4j.Log4j2;
+
+/**
+ * fastutil extends a collection framework with performance-optimized data structures.
+ * &lt;p&gt;
+ * &lt;a href=&quot;https://fastutil.di.unimi.it/docs/&quot;&gt;Library documentation&lt;/a&gt;
+ */
+<span class="nc" id="L40">@Log4j2</span>
+<span class="nc" id="L41">public class Fastutil {</span>
+    public static void main(String[] args) throws IOException {
+<span class="nc" id="L43">        LongSet openHashSet = new LongOpenHashSet();</span>
+        // Access methods avoid boxing and unboxing:
+<span class="nc" id="L45">        openHashSet.add(1);</span>
+<span class="nc" id="L46">        openHashSet.contains(2);</span>
+
+        // Sum all elements
+<span class="nc" id="L49">        long sum = 0;</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        for (LongIterator i = openHashSet.iterator(); i.hasNext(); ) {</span>
+<span class="nc" id="L51">            sum += i.nextLong();</span>
+        }
+        // Note that “for each” iteration must be avoided:
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        for (long x : openHashSet) {</span>
+<span class="nc" id="L55">            sum += x;</span>
+<span class="nc" id="L56">        }</span>
+        // In the loop above, boxing and unboxing is happening (even if your IDE does not report it).
+        // In some cases, a solution is to use a type-specific forEach():
+
+        // Print all elements
+<span class="nc" id="L61">        openHashSet.forEach(log::info);</span>
+        // Or we can use fastutil's type-specific version of Java 8's streams:
+<span class="nc" id="L63">        sum = openHashSet.longStream().sum();</span>
+
+        // Suppose instead you want to store a sorted map from longs to integers.
+        // We will use a tree of AVL type:
+<span class="nc" id="L67">        Long2IntSortedMap avlTreeMap = new Long2IntAVLTreeMap();</span>
+        // Now we can easily modify and access its content:
+<span class="nc" id="L69">        avlTreeMap.put(1, 5);</span>
+<span class="nc" id="L70">        avlTreeMap.put(2, 6);</span>
+<span class="nc" id="L71">        avlTreeMap.put(3, 7);</span>
+<span class="nc" id="L72">        avlTreeMap.put(1000000000L, 10);</span>
+<span class="nc" id="L73">        avlTreeMap.get(1); // This method call will return 5</span>
+<span class="nc" id="L74">        avlTreeMap.get(4); // This method call will return 0</span>
+
+        // We can also try to change the default return value:
+<span class="nc" id="L77">        avlTreeMap.defaultReturnValue(-1);</span>
+<span class="nc" id="L78">        avlTreeMap.get(4); // This method call will return -1</span>
+        // We can obtain a type-specific iterator on the key set:
+<span class="nc" id="L80">        LongBidirectionalIterator lbi = avlTreeMap.keySet().iterator();</span>
+        // Now we sum all keys
+<span class="nc" id="L82">        sum = 0;</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        while (lbi.hasNext()) {</span>
+<span class="nc" id="L84">            sum += lbi.nextLong();</span>
+        }
+
+        // Or we can use again fastutil's type-specific version of Java 8's streams:
+<span class="nc" id="L88">        sum = avlTreeMap.keySet().longStream().sum();</span>
+
+        // We now generate a head map, and iterate bidirectionally over it starting from a given point:
+        // This map contains only keys smaller than 4
+<span class="nc" id="L92">        Long2IntSortedMap sortedMap = avlTreeMap.headMap(4);</span>
+        // This iterator is positioned between 2 and 3
+<span class="nc" id="L94">        LongBidirectionalIterator t = sortedMap.keySet().iterator(2);</span>
+<span class="nc" id="L95">        t.previous(); // This method call will return 2 (t.next() would return 3)</span>
+
+        // Should we need to access the map concurrently, we can wrap it:
+        // This map can be safely accessed by many threads
+<span class="nc" id="L99">        Long2IntSortedMap m2 = Long2IntSortedMaps.synchronize(sortedMap);</span>
+
+        // Linked maps are very flexible data structures which can be used to implement, for instance, queues whose content can be probed efficiently:
+
+        // This map remembers insertion order.
+<span class="nc" id="L104">        IntSortedSet sortedSet = IntLinkedOpenHashSet.of(4, 3, 2, 1);</span>
+<span class="nc" id="L105">        sortedSet.firstInt(); // This method call will return 4</span>
+<span class="nc" id="L106">        sortedSet.lastInt(); // This method call will return 1</span>
+<span class="nc" id="L107">        sortedSet.contains(5); // This method will return false</span>
+<span class="nc" id="L108">        IntBidirectionalIterator bi =</span>
+<span class="nc" id="L109">            sortedSet.iterator(sortedSet.lastInt()); // We could even cast it to a list iterator</span>
+<span class="nc" id="L110">        bi.previous(); // This method call will return 1</span>
+<span class="nc" id="L111">        bi.previous(); // This method call will return 2</span>
+<span class="nc" id="L112">        sortedSet.remove(sortedSet.lastInt()); // This will remove the last element in constant time</span>
+
+        // Now, we play with iterators. It is easy to create iterators over intervals or over arrays, and combine them:
+<span class="nc" id="L115">        IntIterator intListIterator = IntIterators.fromTo(0, 10); // This iterator will return 0, 1, ..., 9</span>
+<span class="nc" id="L116">        int[] a = new int[] {5, 1, 9};</span>
+<span class="nc" id="L117">        int[] b = new int[] {6, 2, 3};</span>
+<span class="nc" id="L118">        IntIterator wrapped = IntIterators.wrap(a); // This iterator will return 5, 1, 9.</span>
+<span class="nc" id="L119">        IntIterator k = IntIterators.concat(intListIterator, wrapped); // This iterator will return 0, 1, ..., 9, 5, 1, 9</span>
+
+        // It is easy to build lists and sets on the fly using the of static factory methods.
+        // For maps you can use the constructors that take key and value arrays (array-based constructors for list and set exist too):
+<span class="nc" id="L123">        IntSet s = IntOpenHashSet.of(1, 2, 3); // This set will contain 1, 2, and 3</span>
+<span class="nc" id="L124">        Char2IntMap m = new Char2IntRBTreeMap(new char[] {'@', '-'}, new int[] {0, 1}); // This map will map '@' to 0 and '-' to 1</span>
+
+        // Whenever you have some data structure, it is easy to serialize it in an efficient (buffered) way, or to dump their content in textual form:
+<span class="nc" id="L127">        BinIO.storeObject(s, &quot;foo&quot;); // This method call will save s in the file named &quot;foo&quot;</span>
+<span class="nc" id="L128">        TextIO.storeInts(s.intIterator(), &quot;foo.txt&quot;); // This method call will save the content of s in ASCII</span>
+<span class="nc" id="L129">        IntIterator ii =</span>
+<span class="nc" id="L130">            TextIO.asIntIterator(&quot;foo.txt&quot;); // This iterator will parse the file and return the integers therein</span>
+
+        // You can also store data (of any size) in native format and access it via memory mapping:
+<span class="nc" id="L133">        var longs = new long[] {1, 2, 3, 4, 5, 6};</span>
+<span class="nc" id="L134">        BinIO.storeLongs(longs, &quot;foo&quot;,</span>
+<span class="nc" id="L135">            ByteOrder.nativeOrder()); // This method call will save the (big) array of longs l in the file named &quot;foo&quot; in native order</span>
+<span class="nc" id="L136">        var fileChannel = FileChannel.open(new File(&quot;foo&quot;).toPath());</span>
+<span class="nc" id="L137">        LongMappedBigList lmbl =</span>
+<span class="nc" id="L138">            LongMappedBigList.map(fileChannel); // Now you can access the data in l via memory mapping</span>
+
+        // Support for Java 8 primitive streams is included for primitive collections (e.g. intStream),
+        // which will work in terms of primitives instead of boxing to wrapper types like the regular stream would do:
+<span class="nc" id="L142">        IntList ints = IntList.of(2, 380, 1297);</span>
+<span class="nc" id="L143">        int lSum = ints.intStream().sum();  // Will be 1679</span>
+<span class="nc" id="L144">        IntList lTransformed = IntArrayList.toList(ints.intStream().map(i -&gt; i + 40)); // Will be 42, 420, 1337</span>
+
+        // You can sort arrays using type-specific comparators specified by lambda expressions (no boxing/unboxing here):
+<span class="nc" id="L147">        IntArrays.quickSort(a, (x, y) -&gt; Integer.compare(y, x)); // Sorts in reverse order</span>
+        // You can also easily specify complex generic sorting, like sorting indirectly on a while swapping elements in a and b in parallel:
+<span class="nc" id="L149">        Arrays.quickSort(0, a.length, (i, j) -&gt; Integer.compare(a[i], a[j]), (i, j) -&gt; {</span>
+<span class="nc" id="L150">            IntArrays.swap(a, i, j);</span>
+<span class="nc" id="L151">            IntArrays.swap(b, i, j);</span>
+<span class="nc" id="L152">        });</span>
+
+        // If you have several cores, you can do it in parallel:
+<span class="nc" id="L155">        IntArrays.parallelQuickSort(a, (x, y) -&gt; y - x); // Sorts in reverse order</span>
+<span class="nc" id="L156">        Arrays.parallelQuickSort(0, a.length, (i, j) -&gt; Integer.compare(a[i], a[j]), (i, j) -&gt; {</span>
+<span class="nc" id="L157">            IntArrays.swap(a, i, j);</span>
+<span class="nc" id="L158">            IntArrays.swap(b, i, j);</span>
+<span class="nc" id="L159">        });</span>
+
+        // Some maps provide a fast iterator on their entry set: such iterators are allowed to reuse the Map.Entry instance they return,
+        // resulting is highly reduced garbage collection (e.g., for large hash maps). To easily access such iterators, we can use a helper static method:
+<span class="nc" id="L163">        Int2IntOpenHashMap intOpenHashMap = new Int2IntOpenHashMap();</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        for (Int2IntMap.Entry e : Int2IntMaps.fastIterable(intOpenHashMap)) {</span>
+<span class="nc" id="L165">            log.info(&quot;{}: {}&quot;, e.getIntKey(), e.getIntValue());</span>
+<span class="nc" id="L166">        }</span>
+<span class="nc" id="L167">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

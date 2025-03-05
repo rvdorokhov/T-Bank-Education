@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GuavaExample.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java</a> &gt; <a href="index.source.html" class="el_package">backend.academy.samples.guava</a> &gt; <span class="el_source">GuavaExample.java</span></div><h1>GuavaExample.java</h1><pre class="source lang-java linenums">package backend.academy.samples.guava;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+import com.google.common.collect.Streams;
+import com.google.common.io.Files;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import lombok.extern.log4j.Log4j2;
+
+/**
+ * Guava is a set of core Java libraries that includes a lot of useful utility classes (analogous to Apache Commons).
+ * &lt;p&gt;
+ * &lt;a href=&quot;https://github.com/google/guava/wiki&quot;&gt;Library documentation&lt;/a&gt;
+ */
+<span class="nc" id="L22">@Log4j2</span>
+<span class="nc" id="L23">public class GuavaExample {</span>
+    public static void main(String[] args) {
+        // Immutable collections throw exception on mutating API methods
+<span class="nc" id="L26">        ImmutableList&lt;String&gt; fruits = ImmutableList.of(&quot;Apple&quot;, &quot;Banana&quot;, &quot;Orange&quot;);</span>
+        try {
+<span class="nc" id="L28">            fruits.add(&quot;Watermelon&quot;); // also, such methods are marked as deprecated</span>
+<span class="nc" id="L29">        } catch (Exception e) {</span>
+<span class="nc" id="L30">            log.info(&quot;Caught exception of type {} after adding new element&quot;, e.getClass());</span>
+<span class="nc" id="L31">        }</span>
+
+        // unmodifiableList() is also possible, but clients will not know if the list is actually unmodifiable
+<span class="nc" id="L34">        List&lt;String&gt; fruitsArrayList = Collections.unmodifiableList(new ArrayList&lt;&gt;(fruits));</span>
+        try {
+<span class="nc" id="L36">            fruitsArrayList.add(&quot;Watermelon&quot;); // possibly highlighted by IDE inspections</span>
+<span class="nc" id="L37">        } catch (Exception e) {</span>
+<span class="nc" id="L38">            log.info(&quot;Caught exception of type {} after adding new element&quot;, e.getClass());</span>
+<span class="nc" id="L39">        }</span>
+
+<span class="nc" id="L41">        Multimap&lt;String, String&gt; groceries = ArrayListMultimap.create();</span>
+<span class="nc" id="L42">        groceries.put(&quot;Fruit&quot;, &quot;Apple&quot;);</span>
+<span class="nc" id="L43">        groceries.put(&quot;Fruit&quot;, &quot;Banana&quot;);</span>
+<span class="nc" id="L44">        groceries.put(&quot;Fruit&quot;, &quot;Cherry&quot;);</span>
+<span class="nc" id="L45">        groceries.put(&quot;Vegetable&quot;, &quot;Carrot&quot;);</span>
+<span class="nc" id="L46">        groceries.put(&quot;Vegetable&quot;, &quot;Broccoli&quot;);</span>
+<span class="nc" id="L47">        log.info(&quot;Fruits: {}&quot;, groceries.get(&quot;Fruit&quot;));</span>
+<span class="nc" id="L48">        log.info(&quot;Vegetables: {}&quot;, groceries.get(&quot;Vegetable&quot;));</span>
+
+<span class="nc" id="L50">        Set&lt;Integer&gt; firstSet = Set.of(1, 2, 3);</span>
+<span class="nc" id="L51">        Set&lt;Integer&gt; secondSet = Set.of(1, 10, 11, 12);</span>
+<span class="nc" id="L52">        Set&lt;Integer&gt; difference = Sets.difference(firstSet, secondSet);</span>
+<span class="nc" id="L53">        Set&lt;Integer&gt; union = Sets.union(firstSet, secondSet);</span>
+<span class="nc" id="L54">        Set&lt;Integer&gt; intersection = Sets.intersection(firstSet, secondSet);</span>
+<span class="nc" id="L55">        log.info(&quot;Difference of two sets: {}&quot;, difference);</span>
+<span class="nc" id="L56">        log.info(&quot;Union of two sets: {}&quot;, union);</span>
+<span class="nc" id="L57">        log.info(&quot;Intersection of two sets: {}&quot;, intersection);</span>
+
+<span class="nc" id="L59">        Iterable&lt;File&gt; filesInCurrentDir = Files.fileTraverser().breadthFirst(new File(&quot;.&quot;));</span>
+<span class="nc" id="L60">        log.info(&quot;First 10 XML files from current dir:&quot;);</span>
+<span class="nc" id="L61">        Streams.stream(filesInCurrentDir)</span>
+<span class="nc" id="L62">            .filter(Files.isFile())</span>
+<span class="nc" id="L63">            .filter(Predicate.not(file -&gt; file.getAbsolutePath().contains(&quot;.idea&quot;)))</span>
+<span class="nc" id="L64">            .filter(file -&gt; &quot;xml&quot;.equals(Files.getFileExtension(file.getName())))</span>
+<span class="nc" id="L65">            .limit(10)</span>
+<span class="nc" id="L66">            .forEach(log::info);</span>
+<span class="nc" id="L67">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

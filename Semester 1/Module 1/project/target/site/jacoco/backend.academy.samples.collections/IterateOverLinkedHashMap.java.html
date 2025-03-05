@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IterateOverLinkedHashMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java</a> &gt; <a href="index.source.html" class="el_package">backend.academy.samples.collections</a> &gt; <span class="el_source">IterateOverLinkedHashMap.java</span></div><h1>IterateOverLinkedHashMap.java</h1><pre class="source lang-java linenums">package backend.academy.samples.collections;
+
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import lombok.extern.log4j.Log4j2;
+
+<span class="nc" id="L8">@Log4j2</span>
+<span class="nc" id="L9">public class IterateOverLinkedHashMap {</span>
+    public static void main(String[] args) {
+<span class="nc" id="L11">        LinkedHashMap&lt;String, String&gt; userCityMapping = new LinkedHashMap&lt;&gt;();</span>
+
+<span class="nc" id="L13">        userCityMapping.put(&quot;Rajeev&quot;, &quot;Bengaluru&quot;);</span>
+<span class="nc" id="L14">        userCityMapping.put(&quot;Chris&quot;, &quot;London&quot;);</span>
+<span class="nc" id="L15">        userCityMapping.put(&quot;David&quot;, &quot;Paris&quot;);</span>
+<span class="nc" id="L16">        userCityMapping.put(&quot;Jesse&quot;, &quot;California&quot;);</span>
+
+<span class="nc" id="L18">        log.info(&quot;=== Iterating over the LinkedHashMap's entrySet using Java 8 forEach and lambda ===&quot;);</span>
+<span class="nc" id="L19">        userCityMapping.forEach((key, value) -&gt; log.info(&quot;{} =&gt; {}&quot;, key, value));</span>
+
+<span class="nc" id="L21">        log.info(&quot;=== Iterating over the entrySet of a LinkedHashMap using iterator() ===&quot;);</span>
+<span class="nc" id="L22">        Iterator&lt;Map.Entry&lt;String, String&gt;&gt; userCityMappingIterator = userCityMapping.entrySet().iterator();</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        while (userCityMappingIterator.hasNext()) {</span>
+<span class="nc" id="L24">            Map.Entry&lt;String, String&gt; entry = userCityMappingIterator.next();</span>
+<span class="nc" id="L25">            log.info(&quot;{} =&gt; {}&quot;, entry.getKey(), entry.getValue());</span>
+<span class="nc" id="L26">        }</span>
+
+<span class="nc" id="L28">        log.info(&quot;=== Iterating over the entrySet of a LinkedHashMap using iterator() and forEachRemaining ===&quot;);</span>
+<span class="nc" id="L29">        userCityMappingIterator = userCityMapping.entrySet().iterator();</span>
+<span class="nc" id="L30">        userCityMappingIterator.forEachRemaining(entry -&gt; log.info(&quot;{} =&gt; {}&quot;, entry.getKey(), entry.getValue()));</span>
+<span class="nc" id="L31">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UnnamedVariables.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java</a> &gt; <a href="index.source.html" class="el_package">backend.academy.samples.java21</a> &gt; <span class="el_source">UnnamedVariables.java</span></div><h1>UnnamedVariables.java</h1><pre class="source lang-java linenums">package backend.academy.samples.java21;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * &lt;a href=&quot;https://docs.oracle.com/en/java/javase/22/language/unnamed-variables-and-patterns.html&quot;&gt;Feature documentation&lt;/a&gt;
+ */
+<span class="nc" id="L10">public class UnnamedVariables {</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L13">        record Order(int qty) {</span>
+        }
+<span class="nc" id="L15">        List&lt;Order&gt; orders = List.of(new Order(1), new Order(2), new Order(3));</span>
+<span class="nc" id="L16">        final int LIMIT = 10;</span>
+<span class="nc" id="L17">        int total = 0;</span>
+
+        // Prior to Java 21
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        for (Order order : orders) {</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">            if (total &lt; LIMIT) {</span>
+<span class="nc" id="L22">                total++;</span>
+            }
+<span class="nc" id="L24">        }</span>
+
+        // As of Java 21
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        for (var _ : orders) {</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">            if (total &lt; LIMIT) {</span>
+<span class="nc" id="L29">                total++;</span>
+            }
+<span class="nc" id="L31">        }</span>
+
+        // bug in Java 21.0 https://bugs.openjdk.org/browse/JDK-8313323
+        // use &gt;= 21.0.1
+
+<span class="nc" id="L36">        System.out.println(formatDate(&quot;2023-01-01&quot;));</span>
+<span class="nc" id="L37">    }</span>
+
+    // real use case
+    static String formatDate(String unformattedDate) {
+        try {
+<span class="nc" id="L42">            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc" id="L43">            Date date = sdf.parse(unformattedDate);</span>
+<span class="nc" id="L44">            return sdf.format(date);</span>
+<span class="nc" id="L45">        } catch (Exception _) {</span>
+            // log error without using exception
+<span class="nc" id="L47">            System.out.println(&quot;Error parsing date&quot;);</span>
+        }
+<span class="nc" id="L49">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StreamApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java</a> &gt; <a href="index.source.html" class="el_package">backend.academy.samples.collections</a> &gt; <span class="el_source">StreamApi.java</span></div><h1>StreamApi.java</h1><pre class="source lang-java linenums">package backend.academy.samples.collections;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+<span class="nc" id="L10">public class StreamApi {</span>
+<span class="nc" id="L11">    public enum Gender {MALE, FEMALE}</span>
+
+<span class="nc" id="L13">    public record Footballer(String name, int age, Gender gender, List&lt;String&gt; positions) {</span>
+    }
+
+<span class="nc" id="L16">    private final List&lt;Footballer&gt; footballerList = List.of(</span>
+<span class="nc" id="L17">        new Footballer(&quot;Messi&quot;, 32, Gender.MALE, List.of(&quot;CF&quot;, &quot;CAM&quot;, &quot;RF&quot;)),</span>
+<span class="nc" id="L18">        new Footballer(&quot;Griezmann&quot;, 28, Gender.MALE, List.of(&quot;CF&quot;, &quot;CAM&quot;, &quot;LF&quot;)),</span>
+<span class="nc" id="L19">        new Footballer(&quot;Arthur&quot;, 23, Gender.MALE, List.of(&quot;CM&quot;, &quot;CAM&quot;)),</span>
+<span class="nc" id="L20">        new Footballer(&quot;Ter Stegen&quot;, 27, Gender.MALE, List.of(&quot;GK&quot;)),</span>
+<span class="nc" id="L21">        new Footballer(&quot;Puig&quot;, 20, Gender.MALE, List.of(&quot;CM&quot;, &quot;CDM&quot;)),</span>
+<span class="nc" id="L22">        new Footballer(&quot;Jennifer&quot;, 29, Gender.FEMALE, List.of(&quot;CF&quot;, &quot;CAM&quot;)),</span>
+<span class="nc" id="L23">        new Footballer(&quot;Jana&quot;, 17, Gender.FEMALE, List.of(&quot;CB&quot;)),</span>
+<span class="nc" id="L24">        new Footballer(&quot;Alexia&quot;, 25, Gender.FEMALE, List.of(&quot;CAM&quot;, &quot;RF&quot;, &quot;LF&quot;))</span>
+    );
+
+    public List&lt;Footballer&gt; filter() {
+<span class="nc" id="L28">        return footballerList.stream()</span>
+<span class="nc" id="L29">            .filter(footballer -&gt; footballer.gender().equals(Gender.FEMALE))</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">            .filter(footballer -&gt; footballer.age() &gt; 23)</span>
+<span class="nc" id="L31">            .toList();</span>
+    }
+
+    public long femalesMoreThan24y() {
+<span class="nc" id="L35">        return footballerList.stream()</span>
+<span class="nc" id="L36">            .filter(footballer -&gt; footballer.gender().equals(Gender.FEMALE))</span>
+<span class="nc" id="L37">            .map(Footballer::age)</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            .filter(age -&gt; age &gt; 24)</span>
+<span class="nc" id="L39">            .count();</span>
+    }
+
+    String allPositionsOfMaleLessThan30y() {
+<span class="nc" id="L43">        return footballerList.stream()</span>
+<span class="nc" id="L44">            .filter(footballer -&gt; footballer.gender().equals(Gender.MALE))</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            .filter(footballer -&gt; footballer.age() &lt; 30)</span>
+<span class="nc" id="L46">            .map(Footballer::positions)</span>
+<span class="nc" id="L47">            .flatMap(Collection::stream)</span>
+<span class="nc" id="L48">            .collect(Collectors.joining(&quot;,&quot;));</span>
+    }
+
+    String allUniquePositionsOfMaleLessThan30y() {
+<span class="nc" id="L52">        return footballerList.stream()</span>
+<span class="nc" id="L53">            .filter(footballer -&gt; footballer.gender().equals(Gender.MALE))</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            .filter(footballer -&gt; footballer.age() &lt; 30)</span>
+<span class="nc" id="L55">            .map(Footballer::positions)</span>
+<span class="nc" id="L56">            .flatMap(Collection::stream)</span>
+<span class="nc" id="L57">            .distinct()</span>
+<span class="nc" id="L58">            .collect(Collectors.joining(&quot;,&quot;));</span>
+    }
+
+    List&lt;Footballer&gt; sortByGenderAndName() {
+<span class="nc" id="L62">        return footballerList.stream()</span>
+<span class="nc" id="L63">            .sorted(Comparator.comparing(Footballer::gender).thenComparing(Footballer::name))</span>
+<span class="nc" id="L64">            .collect(Collectors.toList());</span>
+    }
+
+    long malePlayerCount() {
+<span class="nc" id="L68">        return footballerList.stream()</span>
+<span class="nc" id="L69">            .filter(footballer -&gt; footballer.gender().equals(Gender.MALE))</span>
+<span class="nc" id="L70">            .sorted(Comparator.comparing(Footballer::age))</span>
+<span class="nc" id="L71">            .peek(footballer -&gt; {</span>
+<span class="nc" id="L72">                System.out.println(&quot;footballer = &quot; + footballer);</span>
+<span class="nc" id="L73">            })</span>
+<span class="nc" id="L74">            .count();</span>
+    }
+
+    List&lt;Footballer&gt; twoMaleFootballers() {
+<span class="nc" id="L78">        return footballerList.stream()</span>
+<span class="nc" id="L79">            .filter(footballer -&gt; footballer.gender().equals(Gender.MALE))</span>
+<span class="nc" id="L80">            .limit(2)</span>
+<span class="nc" id="L81">            .collect(Collectors.toList());</span>
+    }
+
+    //    # Skip
+    List&lt;Footballer&gt; sortByGenderAndNameSkipping5() {
+<span class="nc" id="L86">        return footballerList.stream()</span>
+<span class="nc" id="L87">            .sorted(Comparator.comparing(Footballer::gender).thenComparing(Footballer::name))</span>
+<span class="nc" id="L88">            .skip(5)</span>
+<span class="nc" id="L89">            .collect(Collectors.toList());</span>
+    }
+
+    List&lt;Integer&gt; filteredList() {
+<span class="nc" id="L93">        return Stream.of(2, 4, 6, 8, 9, 10, 11, 12)</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            .filter(n -&gt; n % 2 == 0)</span>
+<span class="nc" id="L95">            .collect(Collectors.toList());</span>
+    }
+
+    //Take, While ...
+    List&lt;Integer&gt; takeAWhile() {
+<span class="nc" id="L100">        return Stream.of(2, 4, 6, 8, 9, 10, 11, 12)</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            .takeWhile(n -&gt; n % 2 == 0)</span>
+<span class="nc" id="L102">            .collect(Collectors.toList());</span>
+    }
+
+    List&lt;Integer&gt; dropWhile() {
+<span class="nc" id="L106">        return Stream.of(2, 4, 6, 8, 9, 10, 11, 12)</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            .dropWhile(n -&gt; n % 2 == 0)</span>
+<span class="nc" id="L108">            .collect(Collectors.toList());</span>
+    }
+
+    public void foreach() {
+<span class="nc" id="L112">        Stream.of(4, 1, 6, 7, 19, 2, 3, 81, 64)</span>
+<span class="nc" id="L113">            .parallel()</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            .filter(number -&gt; number &lt; 65)</span>
+<span class="nc" id="L115">            .forEach(number -&gt; System.out.println(&quot;number = &quot; + number));</span>
+<span class="nc" id="L116">    }</span>
+
+    public void foreachOrdered() {
+<span class="nc" id="L119">        Stream.of(4, 1, 6, 7, 19, 2, 3, 81, 64)</span>
+<span class="nc" id="L120">            .parallel()</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            .filter(number -&gt; number &lt; 65)</span>
+<span class="nc" id="L122">            .forEachOrdered(number -&gt; System.out.println(&quot;number = &quot; + number));</span>
+<span class="nc" id="L123">    }</span>
+
+    Footballer[] femaleFootballersToArray() {
+<span class="nc" id="L126">        return footballerList.stream()</span>
+<span class="nc" id="L127">            .filter(footballer -&gt; footballer.gender().equals(Gender.FEMALE))</span>
+<span class="nc" id="L128">            .toArray(Footballer[]::new);</span>
+    }
+
+    Optional&lt;Integer&gt; minAge() {
+<span class="nc" id="L132">        return footballerList.stream()</span>
+<span class="nc" id="L133">            .min(Comparator.comparing(Footballer::age))</span>
+<span class="nc" id="L134">            .map(Footballer::age);</span>
+    }
+
+    Optional&lt;Integer&gt; maxAge() {
+<span class="nc" id="L138">        return footballerList.stream()</span>
+<span class="nc" id="L139">            .max(Comparator.comparing(Footballer::age))</span>
+<span class="nc" id="L140">            .map(Footballer::age);</span>
+    }
+
+    boolean anyMatch() {
+<span class="nc" id="L144">        return footballerList</span>
+<span class="nc" id="L145">            .stream()</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            .anyMatch(footballer -&gt; footballer.age() &gt; 25);</span>
+    }
+
+    boolean allMatch() {
+<span class="nc" id="L150">        return footballerList.stream()</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            .allMatch(footballer -&gt; footballer.age() &gt; 25);</span>
+    }
+
+    boolean noneMatch() {
+<span class="nc" id="L155">        return footballerList.stream()</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            .noneMatch(footballer -&gt; footballer.age() &gt; 100);</span>
+    }
+
+    Optional&lt;Integer&gt; findFirst() {
+<span class="nc" id="L160">        return List.of(4, 1, 3, 7, 5, 6, 2, 28, 15, 29)</span>
+<span class="nc" id="L161">            .parallelStream()</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            .filter(number -&gt; number &gt; 5)</span>
+<span class="nc" id="L163">            .findFirst();</span>
+    }
+
+    Optional&lt;Integer&gt; findAny() {
+<span class="nc" id="L167">        return List.of(4, 1, 3, 7, 5, 6, 2, 28, 15, 29)</span>
+<span class="nc" id="L168">            .parallelStream()</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            .filter(number -&gt; number &gt; 5)</span>
+<span class="nc" id="L170">            .findAny();</span>
+    }
+
+    Optional&lt;String&gt; longestName() {
+<span class="nc" id="L174">        return footballerList.stream()</span>
+<span class="nc" id="L175">            .map(Footballer::name)</span>
+<span class="nc" id="L176">            .reduce((name1, name2)</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">                -&gt; name1.length() &gt; name2.length()</span>
+<span class="nc" id="L178">                ? name1 : name2);</span>
+    }
+
+    List&lt;Footballer&gt; collect() {
+<span class="nc" id="L182">        return footballerList.stream()</span>
+<span class="nc" id="L183">            .filter(footballer -&gt; footballer.gender().equals(Gender.FEMALE))</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            .filter(footballer -&gt; footballer.age() &gt; 23)</span>
+<span class="nc" id="L185">            .toList();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

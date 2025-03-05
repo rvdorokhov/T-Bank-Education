@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.17.0">
+<file name="C:\Users\1\Desktop\BMSTU\T-Bank Education\Module 1\backend_academy_2024_project_1-java-rvdorokhov\src\main\java\backend\academy\classes\game\GameSession.java">
+</file>
+<file name="C:\Users\1\Desktop\BMSTU\T-Bank Education\Module 1\backend_academy_2024_project_1-java-rvdorokhov\src\main\java\backend\academy\classes\game\GameSettingUp.java">
+<error line="9" column="1" severity="warning" message="Private ctor in non-final class. Inspect the code and make sure its intended." source="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck"/>
+</file>
+</checkstyle>

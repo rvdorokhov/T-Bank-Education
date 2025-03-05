@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapstructExample.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java</a> &gt; <a href="index.source.html" class="el_package">backend.academy.samples.mapstruct</a> &gt; <span class="el_source">MapstructExample.java</span></div><h1>MapstructExample.java</h1><pre class="source lang-java linenums">package backend.academy.samples.mapstruct;
+
+import lombok.extern.log4j.Log4j2;
+import org.mapstruct.factory.Mappers;
+
+/**
+ * Mapstruct is a compile-time declarative code generator that simplifies conversion between Java classes.
+ * All you need is to define the interface with annotations – mapstruct will generate an implementation.
+ * &lt;p&gt;
+ * &lt;a href=&quot;https://mapstruct.org/documentation/installation/&quot;&gt;Library documentation&lt;/a&gt;
+ */
+<span class="nc" id="L12">@Log4j2</span>
+<span class="nc" id="L13">public class MapstructExample {</span>
+    public static void main(String[] args) {
+        // or define public static final instance directly in CarMapper interface
+<span class="nc" id="L16">        CarMapper mapper = Mappers.getMapper(CarMapper.class);</span>
+
+<span class="nc" id="L18">        CarDto volvo = mapper.carToCarDto(new Car(&quot;Volvo&quot;, 4, 3.65));</span>
+<span class="nc" id="L19">        log.info(volvo);</span>
+<span class="nc" id="L20">        PersonDto person = mapper.personToPersonDto(new Person(&quot;Alexander Biryukov&quot;));</span>
+<span class="nc" id="L21">        log.info(person);</span>
+
+<span class="nc" id="L23">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

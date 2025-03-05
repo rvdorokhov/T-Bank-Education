@@ -1,0 +1,1 @@
+17:05:37.688 [32mINFO [m [main           ] academy.samples.AssertjExamplesTest -- [32mjava.lang.AssertionError: [check 33's age] should be TolkienCharacter[name=Frodo, age=33, race=Hobbit][m
